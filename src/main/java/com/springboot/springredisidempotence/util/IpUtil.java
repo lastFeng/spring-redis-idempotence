@@ -15,6 +15,8 @@
  */
 package com.springboot.springredisidempotence.util;
 
+import javax.servlet.http.HttpServletRequest;
+
 /**
  * <p> Title: </p>
  *
@@ -23,6 +25,43 @@ package com.springboot.springredisidempotence.util;
  * @author: Guo.Weifeng
  * @version: 1.0
  * @create: 2019/6/24 9:16
+ * 获取Ip地址的工具类
  */
 public class IpUtil {
+
+	/**
+	 * 获取客户真实ip地址
+	 * @param request 客户端请求
+	 * @return ip address string
+	 * */
+	public static String getIpAddress(HttpServletRequest request) {
+		// 多个途径获取ip地址，由于不确定请求头的内容，直接包装成一个方法
+		String ip = request.getHeader("x-forwarded-for");
+
+		// IP地址在“Proxy-Client-IP”属性上
+		if (ip == null || ip.length()==0 || "unknow".equalsIgnoreCase(ip)){
+			ip = request.getHeader("Proxy-Client-IP");
+		}
+
+		// IP地址在“WL-Proxy-Client-IP”属性上
+		if (ip == null || ip.length()==0 || "unknow".equalsIgnoreCase(ip)) {
+			ip = request.getHeader("WL-Proxy-Client-IP");
+		}
+
+		// IP地址在“HTTP_CLIENT_IP”属性上
+		if (ip == null || ip.length()==0 || "unknow".equalsIgnoreCase(ip)) {
+			ip = request.getHeader("HTTP_CLIENT_IP");
+		}
+
+		// IP地址在“HTTP_X_FORWARDED_FOR”属性上
+		if (ip == null || ip.length()==0 || "unknow".equalsIgnoreCase(ip)) {
+			ip = request.getHeader("HTTP_X_FORWARDED_FOR");
+		}
+
+		// // IP地址从远程地址获取
+		if (ip == null || ip.length()==0 || "unknow".equalsIgnoreCase(ip)) {
+			ip = request.getRemoteAddr();
+		}
+		return ip;
+	}
 }

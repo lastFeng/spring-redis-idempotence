@@ -15,6 +15,17 @@
  */
 package com.springboot.springredisidempotence.controller;
 
+import com.springboot.springredisidempotence.common.ServerResponse;
+import com.springboot.springredisidempotence.domain.User;
+import com.springboot.springredisidempotence.service.UserService;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.web.bind.annotation.DeleteMapping;
+import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.PathVariable;
+import org.springframework.web.bind.annotation.PostMapping;
+import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RestController;
+
 /**
  * <p> Title: </p>
  *
@@ -24,5 +35,60 @@ package com.springboot.springredisidempotence.controller;
  * @version: 1.0
  * @create: 2019/6/24 14:00
  */
+@RestController
+@RequestMapping("/user")
 public class UserController {
+	@Autowired
+	private UserService userService;
+
+	/**
+	 * 通过id获取user
+	 * @param id 用户id
+	 * @return user string
+	 * */
+	@GetMapping("{id}")
+	public String getOne(@PathVariable("id") Integer id) {
+		User user = userService.getOne(id);
+		// 为空，输出提示
+		if (user == null) {
+			return "user not exists";
+		}
+		return user.toString();
+	}
+
+	/**
+	 * 新增User
+	 * 提示成功即可
+	 */
+	@PostMapping
+	public String add(User user) {
+		userService.add(user);
+		return "add successfully";
+	}
+
+	/**
+	 * 更新user信息
+	 * */
+	@PostMapping
+	public String update(User user) {
+		userService.update(user);
+		return "update successfully";
+	}
+
+	/**
+	 * 删除User
+	 * */
+	@DeleteMapping("{id}")
+	public String delete(@PathVariable("id") Integer id) {
+		userService.delete(id);
+		return "delete successfully";
+	}
+
+	/**
+	 * 通过用户名和密码登录
+	 * */
+	@PostMapping("login")
+	public ServerResponse login(String username, String password) {
+		return userService.login(username, password);
+	}
 }

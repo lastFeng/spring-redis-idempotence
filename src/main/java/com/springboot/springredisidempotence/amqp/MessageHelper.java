@@ -1,5 +1,6 @@
 package com.springboot.springredisidempotence.amqp;
 
+import com.springboot.springredisidempotence.util.JsonUtil;
 import org.springframework.amqp.core.Message;
 import org.springframework.amqp.core.MessageBuilder;
 import org.springframework.amqp.core.MessageDeliveryMode;

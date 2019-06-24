@@ -15,6 +15,8 @@
  */
 package com.springboot.springredisidempotence.service;
 
+import com.springboot.springredisidempotence.common.ServerResponse;
+
 /**
  * <p> Title: </p>
  *
@@ -25,4 +27,6 @@ package com.springboot.springredisidempotence.service;
  * @create: 2019/6/24 14:09
  */
 public interface TestService {
+	ServerResponse testIdempotence();
+	ServerResponse accessLimit();
 }

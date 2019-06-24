@@ -15,6 +15,17 @@
  */
 package com.springboot.springredisidempotence.interceptor;
 
+import com.springboot.springredisidempotence.annotation.ApiIdempotent;
+import com.springboot.springredisidempotence.service.TokenService;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.web.method.HandlerMethod;
+import org.springframework.web.servlet.HandlerInterceptor;
+import org.springframework.web.servlet.ModelAndView;
+
+import javax.servlet.http.HttpServletRequest;
+import javax.servlet.http.HttpServletResponse;
+import java.lang.reflect.Method;
+
 /**
  * <p> Title: </p>
  *
@@ -24,5 +35,46 @@ package com.springboot.springredisidempotence.interceptor;
  * @version: 1.0
  * @create: 2019/6/24 11:29
  */
-public class ApiIdempotentInterceptor {
+public class ApiIdempotentInterceptor implements HandlerInterceptor {
+
+	@Autowired
+	private TokenService tokenService;
+
+	@Override
+	public boolean preHandle(HttpServletRequest request, HttpServletResponse response, Object handler) throws Exception {
+		// 没有使用该拦截器，放行
+		if (!(handler instanceof HandlerMethod)) {
+			return true;
+		}
+
+		// 使用了该拦截器，进行方法运行前的操作
+		HandlerMethod handlerMethod = (HandlerMethod) handler;
+		// 获取标注的方法
+		Method method = handlerMethod.getMethod();
+		// 获取注解
+		ApiIdempotent methodAnnotation = method.getAnnotation(ApiIdempotent.class);
+
+		if (methodAnnotation != null) {
+			// 幂等性校验，校验通过放行，否则抛出异常
+			check(request);
+		}
+		return true;
+	}
+
+	/**
+	 * 幂等性校验，如果通过，放行，不通过，抛出自定义异常
+	 * */
+	private void check(HttpServletRequest request) {
+		tokenService.checkToken(request);
+	}
+
+	@Override
+	public void postHandle(HttpServletRequest request, HttpServletResponse response, Object handler, ModelAndView modelAndView) throws Exception {
+
+	}
+
+	@Override
+	public void afterCompletion(HttpServletRequest request, HttpServletResponse response, Object handler, Exception ex) throws Exception {
+
+	}
 }

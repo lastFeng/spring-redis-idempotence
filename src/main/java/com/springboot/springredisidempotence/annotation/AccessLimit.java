@@ -15,6 +15,11 @@
  */
 package com.springboot.springredisidempotence.annotation;
 
+import java.lang.annotation.ElementType;
+import java.lang.annotation.Retention;
+import java.lang.annotation.RetentionPolicy;
+import java.lang.annotation.Target;
+
 /**
  * <p> Title: </p>
  *
@@ -23,6 +28,19 @@ package com.springboot.springredisidempotence.annotation;
  * @author: G.Weifeng
  * @version: 1.0
  * @create: 2019/6/24 11:23
+ *
+ * 在需要保证接口防刷限流的Controller的方法上使用此注解
  */
-public interface AccessLimit {
+@Target({ElementType.METHOD})
+@Retention(RetentionPolicy.RUNTIME)
+public @interface AccessLimit {
+	/**
+	 * 最大访问次数
+	 * */
+	int maxCount();
+
+	/**
+	 * 固定时间，单位：s
+	 * */
+	int seconds();
 }

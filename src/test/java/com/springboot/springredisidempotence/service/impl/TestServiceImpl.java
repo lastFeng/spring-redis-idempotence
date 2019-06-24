@@ -15,6 +15,10 @@
  */
 package com.springboot.springredisidempotence.service.impl;
 
+import com.springboot.springredisidempotence.common.ServerResponse;
+import com.springboot.springredisidempotence.service.TestService;
+import org.springframework.stereotype.Service;
+
 /**
  * <p> Title: </p>
  *
@@ -24,5 +28,15 @@ package com.springboot.springredisidempotence.service.impl;
  * @version: 1.0
  * @create: 2019/6/24 14:10
  */
-public class TestServiceImpl {
+@Service
+public class TestServiceImpl implements TestService {
+	@Override
+	public ServerResponse testIdempotence() {
+		return ServerResponse.success("testIdempotence: success");
+	}
+
+	@Override
+	public ServerResponse accessLimit() {
+		return ServerResponse.success("accessLimit: success");
+	}
 }

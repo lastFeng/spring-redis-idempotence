@@ -15,6 +15,13 @@
  */
 package com.springboot.springredisidempotence.controller;
 
+import org.junit.Test;
+import org.junit.runner.RunWith;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.boot.test.context.SpringBootTest;
+import org.springframework.boot.test.web.client.TestRestTemplate;
+import org.springframework.test.context.junit4.SpringRunner;
+
 /**
  * <p> Title: </p>
  *
@@ -24,5 +31,19 @@ package com.springboot.springredisidempotence.controller;
  * @version: 1.0
  * @create: 2019/6/24 14:14
  */
+@RunWith(SpringRunner.class)
+@SpringBootTest(webEnvironment = SpringBootTest.WebEnvironment.RANDOM_PORT)
 public class TestControllerTest {
+	private static final int MAX_LOGIN_COUNT = 100;
+
+	@Autowired
+	private TestRestTemplate testRestTemplate;
+
+	@Test
+	public void testLogin() {
+		for (int i = 0; i < MAX_LOGIN_COUNT; i++) {
+			testRestTemplate.postForObject("/user/login?username={username}&password={password}", null,
+				String.class, "wangzaiplus", "123456");
+		}
+	}
 }

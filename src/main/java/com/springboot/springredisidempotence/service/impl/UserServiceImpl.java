@@ -11,11 +11,14 @@ import com.springboot.springredisidempotence.domain.User;
 import com.springboot.springredisidempotence.mapper.MsgLogMapper;
 import com.springboot.springredisidempotence.mapper.UserMapper;
 import com.springboot.springredisidempotence.service.UserService;
+import com.springboot.springredisidempotence.util.JodaTimeUtil;
+import com.springboot.springredisidempotence.util.JsonUtil;
+import com.springboot.springredisidempotence.util.RandomUtil;
 import org.apache.commons.lang3.StringUtils;
-import org.apache.tomcat.util.bcel.Const;
 import org.springframework.amqp.rabbit.connection.CorrelationData;
 import org.springframework.amqp.rabbit.core.RabbitTemplate;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.stereotype.Service;
 
 import java.util.Date;
 import java.util.List;
@@ -26,6 +29,7 @@ import java.util.List;
  * @description:
  * @data created in 2019-06-23 19:09
  */
+@Service
 public class UserServiceImpl implements UserService {
     @Autowired
     private UserMapper userMapper;

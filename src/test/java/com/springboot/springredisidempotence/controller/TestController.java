@@ -15,6 +15,17 @@
  */
 package com.springboot.springredisidempotence.controller;
 
+import com.springboot.springredisidempotence.annotation.AccessLimit;
+import com.springboot.springredisidempotence.annotation.ApiIdempotent;
+import com.springboot.springredisidempotence.common.ServerResponse;
+import com.springboot.springredisidempotence.service.TestService;
+import lombok.extern.slf4j.Slf4j;
+import org.springframework.amqp.core.AmqpTemplate;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.web.bind.annotation.PostMapping;
+import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RestController;
+
 /**
  * <p> Title: </p>
  *
@@ -24,5 +35,25 @@ package com.springboot.springredisidempotence.controller;
  * @version: 1.0
  * @create: 2019/6/24 14:08
  */
+@RestController
+@RequestMapping("/test")
+@Slf4j
 public class TestController {
+	@Autowired
+	private TestService testService;
+
+	@Autowired
+	private AmqpTemplate rabbitTemplate;
+
+	@ApiIdempotent
+	@PostMapping("testIdempotence")
+	public ServerResponse testIdempotence() {
+		return testService.testIdempotence();
+	}
+
+	@AccessLimit(maxCount = 5, seconds = 5)
+	@PostMapping("accessLimit")
+	public ServerResponse accessLimit() {
+		return testService.accessLimit();
+	}
 }

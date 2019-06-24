@@ -4,6 +4,7 @@ import com.springboot.springredisidempotence.domain.LoginLog;
 import com.springboot.springredisidempotence.mapper.LoginLogMapper;
 import com.springboot.springredisidempotence.service.LoginLogService;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.stereotype.Service;
 
 /**
  * @author guowf
@@ -11,6 +12,7 @@ import org.springframework.beans.factory.annotation.Autowired;
  * @description:
  * @data created in 2019-06-23 19:06
  */
+@Service
 public class LoginLogServiceImpl implements LoginLogService {
     @Autowired
     private LoginLogMapper loginLogMapper;
