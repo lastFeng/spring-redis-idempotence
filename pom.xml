@@ -20,7 +20,7 @@
         <jedis-version>2.9.0</jedis-version>
         <redisson-version>3.11.0</redisson-version>
         <common-lang3-version>3.8.1</common-lang3-version>
-        <guava-version>28.0-jre</guava-version>
+        <guava-version>29.0-jre</guava-version>
         <joda-time-version>2.10.2</joda-time-version>
     </properties>
 
